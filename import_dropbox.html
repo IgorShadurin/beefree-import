@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Piyush Shukla">
+
+<title>Beefree</title>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+<link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,900&amp;subset=cyrillic" rel="stylesheet">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+<style type="text/css">
+	html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+.container {
+  max-width: 960px;
+}
+
+.pricing-header {
+  max-width: 700px;
+}
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</head>
+<body>
+ 
+  <!--h1 class="display-4">Instagram Report</h1-->
+  <p class="lead">Your data on dropbox is as below :</p>
+
+<!---script >
+
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      isLoaded: false,
+      items: []
+    };
+  }
+
+  componentDidMount() {
+    fetch('https://api.instagram.com/v1/users/self/?access_token=8539812300.4d13c46.b6f36da6cd2e418389d74cd1b48a65ae')
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            isLoaded: true,
+            items: result.items
+          });
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      )
+  }
+
+  render() {
+    const { error, isLoaded, items } = this.state;
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    } else if (!isLoaded) {
+      return <div>Loading...</div>;
+    } else {
+      return (
+        <ul>
+          {items.map(item => (
+            <li key={item.name}>
+             {item.name} {item.price}
+            </li>
+          ))}
+       </ul>
+      );
+    }
+  }
+}
+
+ReactDOM.render(
+  <FetchDemo subreddit="reactjs"/>,
+  document.getElementById('root')
+);
+
+</script> //-->
+<script type = "text/javascript" language = "javascript">
+
+
+        function getHashValue(key) {
+                var matches = location.hash.match(new RegExp(key+'=([^&]*)'));
+                return matches ? matches[1] : null;
+                }
+function formatBytes(a,b){if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f]}
+
+
+ $(document).ready(function() {
+
+var statshow, statshowa, statshowb, statshowc;     
+
+// usage
+var uid = getHashValue('uid');
+var account_id = getHashValue('account_id');
+var access_token =  getHashValue('access_token');
+var token_type = getHashValue('token_type');
+   
+   // alert(access_token);
+        
+
+        $.ajax({
+    url: 'https://api.dropboxapi.com/2/users/get_account',
+    method: "POST",
+    dataType: "json",
+    crossDomain: true,
+    contentType: "application/json; charset=utf-8",
+    data: '{"account_id":"'+ decodeURIComponent(account_id)+'"}',
+    cache: false,
+    beforeSend: function (xhr) {
+        /* Authorization header */
+        xhr.setRequestHeader("Authorization", 'Bearer ' + access_token);
+    /*    xhr.setRequestHeader("X-Mobile", "false");*/
+    },
+    success: function (data) {
+//alert (JSON.stringify(data));
+
+   statshowa = 'Name: <strong> '+data.name.display_name+'</strong> with email <strong>'+ data.email+'</strong>';
+    $('#root').html(statshowa);
+
+        $.ajax({
+    url: 'https://api.dropboxapi.com/2/users/get_space_usage',
+    method: "POST",
+   /* dataType: "json",
+    crossDomain: true,
+    contentType: "application/json; charset=utf-8",
+    data: '',*/
+    cache: false,
+    beforeSend: function (xhr){
+        /* Authorization header */
+        xhr.setRequestHeader("Authorization", 'Bearer ' + access_token);
+    /*    xhr.setRequestHeader("X-Mobile", "false");*/
+    },
+    success: function (data) {
+//alert (JSON.stringify(data));
+   statshowb=  '<p>Total <strong>'+formatBytes(data.used,2)+'</strong> data stored of <strong>'+ formatBytes(data.allocation.allocated,2)+'</strong></p>';
+    
+        $('#root').append(statshowb);
+
+        $.ajax({
+    url: 'https://api.dropboxapi.com/2/files/list_folder',
+    method: "POST",
+    dataType: "json",
+    crossDomain: true,
+    contentType: "application/json; charset=utf-8",
+    data: '{"path": "","recursive": false,    "include_media_info": false,    "include_deleted": false,   "include_has_explicit_shared_members": false,    "include_mounted_folders": true,    "include_non_downloadable_files": true}',
+    cache: false,
+    beforeSend: function (xhr) {
+        /* Authorization header */
+        xhr.setRequestHeader("Authorization", 'Bearer ' + access_token);
+    /*    xhr.setRequestHeader("X-Mobile", "false");*/
+    },
+    success: function (data) {
+//alert (JSON.stringify(data));
+var filelist ='';
+        $.each(data.entries, function(key,value){
+      
+        //alert(JSON.stringify(value[".tag"]));   
+            if (value[".tag"]=='folder') filelist=filelist+ '<i class="fas fa-folder"></i> ';            
+           if (value[".tag"]=='file') filelist= filelist+'<i class="fas fa-file"></i> ';            
+          filelist=filelist+value["name"]+'  ';
+           if (value[".tag"]=='file') {
+               filelist=filelist+'<i>'+formatBytes(value["size"],2)+'</i>  ';
+              // filelist=filelist+value["client_modified"]+'  ';
+          }
+          
+          filelist=filelist+'<br/>';
+        });
+
+      statshowc =  filelist;
+$('#root').append(filelist);
+                 //   $('#root').html(statshow);
+                //    alert(JSON.stringify(statshowa+statshowb+statshowc));                    
+                  window.parent.$("#dropbox-data").html(statshowa+statshowb+statshowc);  
+                if(window.opener && !window.opener.closed)
+                 window.opener.$("#dropbox-data").html(statshowa+statshowb+statshowc);  
+                
+              
+				
+				window.parent.$("#view-dropbox-btn").hide();  
+                if(window.opener && !window.opener.closed)
+               window.opener.$("#view-dropbox-btn").hide(); 
+				
+				window.parent.$("#import-dropbox-btn").show();  
+                if(window.opener && !window.opener.closed)
+                window.opener.$("#import-dropbox-btn").show(); 
+				
+				   self.close();
+
+
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+    alert (JSON.stringify(jqXHR)+'Error:'+textStatus+'Thrown:'+errorThrown);
+    }
+});    
+    
+
+
+
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+  //  alert (JSON.stringify(jqXHR)+'Error:'+textStatus+'Thrown:'+errorThrown);
+    }
+});
+        
+
+
+
+      
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+   alert (JSON.stringify(jqXHR)+'Error:'+textStatus+'Thrown:'+errorThrown);
+    }
+});
+
+
+
+    
+
+ 
+    
+      				
+         });
+      </script>
+
+  <div class="container">
+
+<div id="root"></div>
+<!--button onClick="window.location='import_instagram_files.html'+window.location.hash">Click here for Import</button-->
+
+ </div>
+
+
+
+</body>
+</html>

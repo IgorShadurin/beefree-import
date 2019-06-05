@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Piyush Shukla">
+
+<title>Beefree</title>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+<link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,900&amp;subset=cyrillic" rel="stylesheet">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+<style type="text/css">
+	html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+.container {
+  max-width: 960px;
+}
+
+.pricing-header {
+  max-width: 700px;
+}
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</head>
+<body>
+ 
+  <!--h1 class="display-4">Instagram Report</h1-->
+  <p class="lead">Your data on instagram is as below :</p>
+
+<!---script >
+
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      isLoaded: false,
+      items: []
+    };
+  }
+
+  componentDidMount() {
+    fetch('https://api.instagram.com/v1/users/self/?access_token=8539812300.4d13c46.b6f36da6cd2e418389d74cd1b48a65ae')
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            isLoaded: true,
+            items: result.items
+          });
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      )
+  }
+
+  render() {
+    const { error, isLoaded, items } = this.state;
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    } else if (!isLoaded) {
+      return <div>Loading...</div>;
+    } else {
+      return (
+        <ul>
+          {items.map(item => (
+            <li key={item.name}>
+             {item.name} {item.price}
+            </li>
+          ))}
+       </ul>
+      );
+    }
+  }
+}
+
+ReactDOM.render(
+  <FetchDemo subreddit="reactjs"/>,
+  document.getElementById('root')
+);
+
+</script> //-->
+<script type = "text/javascript" language = "javascript">
+         $(document).ready(function() {
+        		var instahash=window.location.hash;
+               $.getJSON('https://api.instagram.com/v1/users/self/?'+instahash.substr(1), function(jd) {
+                  
+                  var messg='<p><img src="'+jd.data.profile_picture+'" class="img-fluid  rounded" width="50px" > <strong>'+jd.data.full_name+'</strong> ('+jd.data.username+') has <strong>' + jd.data.counts.media + '</strong> Posts <strong>' + jd.data.counts.follows + '</strong> followers <strong>' + jd.data.counts.followed_by + '</strong> following on your Instagram</p>';
+                  
+                  $('#root').html(messg);
+                  window.parent.$("#instagram-data").html(messg);  
+            if(window.opener && !window.opener.closed)
+                    window.opener.$("#instagram-data").html(messg);  
+                 //  alert('closing');
+                
+               });
+				
+			  $.getJSON('https://api.instagram.com/v1/users/self/media/recent?count=5&'+instahash.substr(1), function(jdi) {
+			 
+			      var recentmed= "Recent 5 posts are: <br/>";     
+			      $.each( jdi.data, function( key, value ) {
+                            recentmed = recentmed + '<img src="'+value.images.thumbnail.url+'" class="img-fluid  rounded" width="50px" >&nbsp;';
+                            });
+			 
+			     // alert(JSON.stringify(jdi.data[0].images.thumbnail.url));
+                    $('#root').append(recentmed);
+                  window.parent.$("#instagram-data").append(recentmed);  
+                if(window.opener && !window.opener.closed)
+                  window.opener.$("#instagram-data").append(recentmed);  
+                
+               });	
+				
+				window.parent.$("#view-instagram-btn").hide();  
+                if(window.opener && !window.opener.closed)
+                window.opener.$("#view-instagram-btn").hide(); 
+				
+				window.parent.$("#import-instagram-btn").attr("href", 'import_instagram_files.html#'+instahash.substr(1)); 
+				window.parent.$("#import-instagram-btn").show();  
+                if(window.opener && !window.opener.closed){
+    				window.opener.$("#import-instagram-btn").attr("href", 'import_instagram_files.html#'+instahash.substr(1)); 
+                    window.opener.$("#import-instagram-btn").show(); 
+                }
+				   self.close();
+				
+				
+					
+         });
+      </script>
+
+  <div class="container">
+<div id="root"></div>
+<!--button onClick="window.location='import_instagram_files.html'+window.location.hash">Click here for Import</button-->
+
+ </div>
+
+
+
+</body>
+</html>

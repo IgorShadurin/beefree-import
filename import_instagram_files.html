@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Piyush Shukla">
+
+<title>Beefree</title>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+<link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,900&amp;subset=cyrillic" rel="stylesheet">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+<style type="text/css">
+	html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+.container {
+  max-width: 960px;
+}
+
+.pricing-header {
+  max-width: 700px;
+}
+
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+  <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+  <h5 class="my-0 mr-md-auto font-weight-normal">BeeFree</h5>
+  <nav class="my-2 my-md-0 mr-md-3">
+    <a class="p-2 text-dark" href="#">Features</a>
+    <a class="p-2 text-dark" href="#">Enterprise</a>
+    <a class="p-2 text-dark" href="#">Support</a>
+    <a class="p-2 text-dark" href="#">Pricing</a>
+  </nav>
+  <a class="btn btn-outline-primary" href="#">Sign up</a>
+</div>
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+  <h1 class="display-4">Instagram Report</h1>
+  <p class="lead">Your data on instagram is as below :</p>
+  </div>
+
+<!---script >
+
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      isLoaded: false,
+      items: []
+    };
+  }
+
+  componentDidMount() {
+    fetch('https://api.instagram.com/v1/users/self/?access_token=8539812300.4d13c46.b6f36da6cd2e418389d74cd1b48a65ae')
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            isLoaded: true,
+            items: result.items
+          });
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      )
+  }
+
+  render() {
+    const { error, isLoaded, items } = this.state;
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    } else if (!isLoaded) {
+      return <div>Loading...</div>;
+    } else {
+      return (
+        <ul>
+          {items.map(item => (
+            <li key={item.name}>
+             {item.name} {item.price}
+            </li>
+          ))}
+       </ul>
+      );
+    }
+  }
+}
+
+ReactDOM.render(
+  <FetchDemo subreddit="reactjs"/>,
+  document.getElementById('root')
+);
+
+</script> //-->
+
+<script type = "text/javascript" language = "javascript">
+         $(document).ready(function() {
+        		var instahash=window.location.hash;
+        		var total_media =0;
+               $.getJSON('https://api.instagram.com/v1/users/self/?'+instahash.substr(1), function(jd) {
+                  $('#root').html('<p>Importing '+jd.data.full_name+' ('+jd.data.username+') Media...  </p>');
+                  var total_media= jd.data.counts.media ;
+                 // alert (jd.data.counts.media);
+                  
+                  				var i=1;
+                  				var j=0;
+		     $.getJSON('https://api.instagram.com/v1/users/self/media/recent/?COUNT=20&'+instahash.substr(1), function(kd) {
+              //   alert (kd.data);
+                 $.each(kd.data, function (medindex, medvalue) {
+                    
+                 
+                  $('#im_files').append('<p>Importing Media '+ i+' of '+ total_media +'<img src="'+ kd.data[j].images.thumbnail.url +'" caption="'+ kd.data[j].type+'"  width="50px;"> </p>');    j=j+1;
+                 i=i+1;    
+                 
+                  $('#media_imports').width((i*100/total_media)+'%');
+                 setTimeout(function(){ },5000); 
+                 
+                     });
+			               });
+                 
+
+               });
+				
+
+         });
+      </script>
+
+  <div class="container">
+
+<div class="progress" style="height: 20px;">
+  <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%" id="media_imports"></div>
+</div>
+
+<div id="root"></div>
+<div id="im_files"></div>
+
+ <footer class="pt-4 my-md-5 pt-md-5 border-top">
+    <div class="row">
+      <div class="col-12 col-md">
+        <small class="d-block mb-3 text-muted">&copy; BeeFree 2019</small>
+      </div>
+
+</div>
+  </footer>
+</div>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
