@@ -1,20 +1,104 @@
 import React, {Component, Fragment} from 'react';
+import {Doughnut} from 'react-chartjs-2';
 
 class Layout extends Component {
-    /*constructor(props) {
+    constructor(props) {
         super(props);
 
-    }*/
+        this.state = {
+            dataStata: this.getDataStata(),
+            instagramUsername: '',
+            instagramProcess: false,
+            instagramError: ''
+        };
+        this.instagramModal = null;
+    }
+
+    getDataStata = () => {
+        let dataStata = {};
+        if (localStorage.getItem('data_stata') !== null) {
+            try {
+                dataStata = JSON.parse(localStorage.getItem('data_stata'));
+            } catch (e) {
+            }
+        }
+
+        return dataStata;
+    };
+
+    setDataStata = (service, key, value) => {
+        let data = this.getDataStata();
+        data[service] = {...data[service], ...{[key]: value}};
+
+        localStorage.setItem('data_stata', JSON.stringify(data));
+        this.setState({
+            dataStata: data
+        });
+    };
+
+    onChange = (e) => {
+        this.setState({
+            [e.target.dataset.field]: e.target.value
+        });
+    };
 
     onInstagramReceiveInfo = () => {
+        const url = `https://testeron.pro/insta/go.php?limit=100&login=${this.state.instagramUsername}`;
+        this.setState({
+            instagramProcess: true,
+            instagramError: ''
+        });
+
+        fetch(url)
+            .then(response => {
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    return response.json();
+                }
+
+                throw new TypeError("Please check username or try again later");
+            })
+            .then(data => {
+                console.log(data);
+                let videosCount = 0;
+                let photosCount = 0;
+                if (Array.isArray(data) && data.length > 0) {
+                    data.forEach((item) => {
+                        if (item.type === 'image') {
+                            photosCount++;
+                        } else if (item.type === 'video') {
+                            videosCount++;
+                        }
+                    });
+                }
+
+                const stataResult = `Photos: ${photosCount}, videos: ${videosCount}`;
+                console.log(stataResult);
+
+                this.setDataStata('instagram', 'photos', photosCount);
+                this.setDataStata('instagram', 'videos', videosCount);
+                this.setDataStata('instagram', 'username', this.state.instagramUsername);
+                window.jQuery(this.instagramModal).modal('hide');
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({
+                    instagramError: error.message
+                })
+            })
+            .then(_ => {
+                this.setState({
+                    instagramProcess: false
+                });
+
+            });
     };
 
     connectInstagram = () => {
+        this.setState({
+            instagramUsername: ''
+        });
         //window.open('https://api.instagram.com/oauth/authorize/?client_id=4d13c46e2674470b8ca898b7aa7954b3&redirect_uri=https://c3web.io/beefree/import_instagram.html&response_type=token', 'InstagramWindow', 'width=800, height=600');
-        // todo show modal for username
-        //http://testeron.pro/insta/go.php?limit=1&login=ms.shadurina
-        // fetch data by username
-        // store it
     };
 
     connectDropbox = () => {
@@ -38,9 +122,48 @@ class Layout extends Component {
     };
 
     render() {
+        const {dataStata, instagramProcess, instagramError} = this.state;
+
+        let instagramData = {};
+        const instagramOptions = {
+            responsive: true,
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: '...'
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
+        };
+        if ("instagram" in dataStata) {
+            instagramOptions.title.text = 'Username: ' + dataStata.instagram.username;
+            instagramData = {
+                datasets: [{
+                    data: [
+                        dataStata.instagram.photos,
+                        dataStata.instagram.videos
+                    ],
+                    backgroundColor: [
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                    ],
+                    label: 'Dataset 1'
+                }],
+                labels: [
+                    'Photos',
+                    'Videos'
+                ]
+            };
+        }
+
         return (
             <Fragment>
-                <div className="modal fade bd-example-modal-lg" id="instagramModal" tabIndex="-1" role="dialog"
+                <div ref={modal => this.instagramModal = modal} className="modal fade bd-example-modal-lg"
+                     id="instagramModal" tabIndex="-1" role="dialog"
                      aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="modal-dialog modal-lg modal-dialog-scrollable" role="document">
                         <div className="modal-content">
@@ -52,17 +175,36 @@ class Layout extends Component {
                             </div>
 
                             <div className="modal-body">
-                                Body here
+                                <div className="form-group">
+                                    <label htmlFor="exampleInputEmail1">Instagram username</label>
+                                    <input type="email"
+                                           className="form-control"
+                                           id="exampleInputEmail1"
+                                           aria-describedby="emailHelp"
+                                           data-field="instagramUsername"
+                                           onChange={this.onChange}
+                                           value={this.state.instagramUsername}
+                                           placeholder="Your username"/>
+                                    {/*<small id="emailHelp" className="form-text text-muted">
+                                            Please, enter your username
+                                        </small>*/}
+                                </div>
+
+                                {instagramError && <p>{instagramError}</p>}
                             </div>
 
                             <div className="modal-footer">
+                                {instagramProcess && <button className="btn btn-outline-primary"
+                                                             type="button"
+                                                             disabled>
+                                    Receiving info...
+                                </button>}
 
-
-                                <button className="btn btn-outline-primary"
-                                        type="button"
-                                        onClick={this.onInstagramReceiveInfo}>
+                                {!instagramProcess && <button className="btn btn-outline-primary"
+                                                              type="button"
+                                                              onClick={this.onInstagramReceiveInfo}>
                                     Receive info
-                                </button>
+                                </button>}
 
                             </div>
                         </div>
@@ -101,12 +243,19 @@ class Layout extends Component {
                                 <div className="card-body">
                                     <h5 className="card-title"/>
                                     <p className="card-text" id="instagram-data">
-                                        Instagram is a popular photo and video-sharing social networking service owned
-                                        by
-                                        Facebook, Inc. Launched in October 2010.</p>
+                                        {!("instagram" in dataStata) &&
+                                        <span>Instagram is a popular photo and video-sharing social networking service owned by Facebook, Inc. Launched in October 2010.</span>}
+
+                                        {"instagram" in dataStata &&
+                                        <Doughnut data={instagramData} width={400} height={400}
+                                                  options={instagramOptions}/>}
+
+                                        {/*"instagram" in dataStata &&
+                                        <span>Username: {dataStata.instagram.username}, Photos: {dataStata.instagram.photos}, videos: {dataStata.instagram.videos}</span>*/}
+                                    </p>
 
                                     <button className="btn btn-primary"
-                                        //onClick={this.connectInstagram}
+                                            onClick={this.connectInstagram}
                                             data-toggle="modal"
                                             data-target="#instagramModal">
                                         View Data
