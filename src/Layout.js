@@ -15,6 +15,14 @@ class Layout extends Component {
         this.onDropboxReceiveInfo();
     }
 
+    remove_hash_from_url = () => {
+        var uri = window.location.toString();
+        if (uri.indexOf("#") > 0) {
+            var clean_uri = uri.substring(0, uri.indexOf("#"));
+            window.history.replaceState({}, document.title, clean_uri);
+        }
+    };
+
     formatBytes = (a, b) => {
         if (0 == a) return "0 Bytes";
         var c = 1024, d = b || 2, e = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
@@ -207,6 +215,7 @@ class Layout extends Component {
                                 //self.close();
 
 */
+                                self.remove_hash_from_url();
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
                                 alert(JSON.stringify(jqXHR) + 'Error:' + textStatus + 'Thrown:' + errorThrown);
