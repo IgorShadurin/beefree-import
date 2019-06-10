@@ -198,23 +198,6 @@ class Layout extends Component {
                                 });
 
                                 statshowc = filelist;
-                                /*window.$('#root').append(filelist);
-                                window.parent.$("#dropbox-data").html(statshowa + statshowb + statshowc);
-                                if (window.opener && !window.opener.closed)
-                                    window.opener.$("#dropbox-data").html(statshowa + statshowb + statshowc);
-
-
-                                window.parent.$("#view-dropbox-btn").hide();
-                                if (window.opener && !window.opener.closed)
-                                    window.opener.$("#view-dropbox-btn").hide();
-
-                                window.parent.$("#import-dropbox-btn").show();
-                                if (window.opener && !window.opener.closed)
-                                    window.opener.$("#import-dropbox-btn").show();
-
-                                //self.close();
-
-*/
                                 self.remove_hash_from_url();
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
