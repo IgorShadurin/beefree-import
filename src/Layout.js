@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {Doughnut} from 'react-chartjs-2';
+import Youtube from "./services/Youtube";
 
 class Layout extends Component {
     constructor(props) {
@@ -451,14 +452,19 @@ class Layout extends Component {
                                     <button className="btn btn-primary" id="view-dropbox-btn"
                                             onClick={this.connectDropbox}
                                     >
-                                        View data
+                                        View Data
                                     </button>
                                 </div>
                             </div>
 
                         </div>
-                        <div className="col-sm-4">
 
+                        <Youtube/>
+                    </div>
+
+
+                    <div className="row" style={{marginTop: 20}}>
+                        <div className="col-sm-4">
                             <div className="card">
                                 <div className="card-header">Google Drive</div>
                                 <div className="card-body">
@@ -475,34 +481,7 @@ class Layout extends Component {
                             </div>
                         </div>
 
-                    </div>
-
-
-                    <div className="row" style={{marginTop: 20}}>
                         <div className="col-sm-4">
-
-                            <div className="card">
-                                <div className="card-header">Youtube</div>
-                                <div className="card-body">
-                                    <h5 className="card-title">Youtube</h5>
-                                    <p className="card-text" id="youtube-data">YouTube is an American video-sharing
-                                        website headquartered
-                                        in San Bruno, California - strarted in February 2005. </p>
-
-                                    <button
-                                        disabled
-                                        className="btn btn-primary"
-                                        //onClick="window.open('#','youtubeWindow', 'width=800, height=600');"
-                                        onClick={this.notImplemented}>
-                                        <i>Coming Soon!</i>
-                                    </button>
-
-                                </div>
-                            </div>
-
-                        </div>
-                        <div className="col-sm-4">
-
                             <div className="card">
                                 <div className="card-header">Facebook</div>
                                 <div className="card-body">
